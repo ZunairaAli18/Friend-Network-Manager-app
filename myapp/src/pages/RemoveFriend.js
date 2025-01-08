@@ -70,5 +70,4 @@ function RemoveFriend() {
   );
 }
 
-export default RemoveFriend;
-
+export default RemoveFriend;

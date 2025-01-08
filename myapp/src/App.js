@@ -1,12 +1,28 @@
 import React from 'react';
-import SignupForm from './SignupForm';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
+import Home from './pages/Home';
+import Friends from './pages/Friends';
+import AddFriend from './pages/AddFriend';
+import RemoveFriend from './pages/RemoveFriend';
+import MutualFriends from './pages/MutualFriends';
+import { FriendsProvider } from './context/FriendsContext';
 
 function App() {
   return (
-    <div className="app">
-      <SignupForm />
-    </div>
+    <FriendsProvider>
+      <Router>
+        <div className="app">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/friends" element={<Friends />} />
+            <Route path="/add-friend" element={<AddFriend />} />
+            <Route path="/remove-friend" element={<RemoveFriend />} />
+            <Route path="/mutual-friends" element={<MutualFriends />} />
+          </Routes>
+        </div>
+      </Router>
+    </FriendsProvider>
   );
 }
 

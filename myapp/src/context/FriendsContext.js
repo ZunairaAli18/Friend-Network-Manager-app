@@ -19,7 +19,7 @@ export function FriendsProvider({ children }) {
   };
 
   const searchFriends = (query) => {
-    return friends.filter(friend => 
+    return friends.filter(friend =>
       friend.name.toLowerCase().includes(query.toLowerCase()) ||
       friend.username.toLowerCase().includes(query.toLowerCase())
     );
@@ -39,4 +39,3 @@ export function useFriends() {
   }
   return context;
 }
-

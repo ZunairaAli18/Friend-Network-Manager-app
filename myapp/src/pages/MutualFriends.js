@@ -69,5 +69,4 @@ function MutualFriends() {
   );
 }
 
-export default MutualFriends;
-
+export default MutualFriends;
