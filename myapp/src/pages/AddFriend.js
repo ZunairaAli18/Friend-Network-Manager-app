@@ -79,4 +79,4 @@ function AddFriend() {
   );
 }
 
-export default AddFriend;
+export default AddFriend;
