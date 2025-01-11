@@ -7,6 +7,7 @@ import AddFriend from './pages/AddFriend';
 import RemoveFriend from './pages/RemoveFriend';
 import MutualFriends from './pages/MutualFriends';
 import { FriendsProvider } from './context/FriendsContext';
+import Login from './login';
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
       <Router>
         <div className="app">
           <Routes>
-            <Route path="/" element={<Home />} />
+          <Route path="/" element={<SignupForm />} />
+          <Route path="/login" element={<Login />} />
+            <Route path="/home" element={<Home />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/add-friend" element={<AddFriend />} />
             <Route path="/remove-friend" element={<RemoveFriend />} />

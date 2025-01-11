@@ -1,0 +1,168 @@
+.signup-container {
+    display: flex;
+    min-height: 100vh;
+    background-color: #ffffff;
+}
+
+.left-section {
+    flex: 1;
+    background-color: #f0f9f9;
+    padding: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.left-section h1 {
+    font-size: 48px;
+    color: #2d3748;
+    max-width: 500px;
+    line-height: 1.2;
+}
+
+.right-section {
+    flex: 1;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+h2 {
+    font-size: 32px;
+    margin-bottom: 32px;
+    color: #1a202c;
+    text-align: center;
+}
+
+.social-button {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.2s;
+}
+
+.social-button:hover {
+    background-color: #f7fafc;
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 24px 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.divider span {
+    padding: 0 16px;
+    color: #718096;
+    font-size: 14px;
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: #00bfa6;
+}
+
+.create-account-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #00bfa6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.create-account-button:hover {
+    background-color: #00a896;
+}
+
+.login-text {
+    text-align: center;
+    margin-top: 24px;
+    color: #4a5568;
+}
+
+.login-link {
+    color: #00bfa6;
+    text-decoration: none;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .signup-container {
+        flex-direction: column;
+    }
+
+    .left-section {
+        padding: 32px 24px;
+    }
+
+    .left-section h1 {
+        font-size: 32px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .right-section {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .left-section h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 24px;
+        margin-bottom: 24px;
+    }
+
+    .social-button {
+        font-size: 14px;
+    }
+}
