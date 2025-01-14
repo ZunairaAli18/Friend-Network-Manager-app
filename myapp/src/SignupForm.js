@@ -1,7 +1,36 @@
-import React from 'react';
 import './SignupForm.css';
+import React, { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "./firebase";
+import { db } from './firebase';
+import { setDoc, doc } from "firebase/firestore";
 
 const SignupForm = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fname, setFname] = useState("");
+
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      const user = auth.currentUser;
+      console.log(user);
+      if (user) {
+        await setDoc(doc(db, "Users", user.uid), {
+          email: user.email,
+          firstName: fname,
+          photo:""
+        });
+      }
+      console.log("User Registered Successfully!!");
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
   return (
     <div className="signup-container">
       <div className="left-section">
@@ -11,34 +40,36 @@ const SignupForm = () => {
         <h2>Create Account</h2>
         
         <button className="social-button google-button">
-          <img src="/placeholder.svg" alt="Google icon" className="social-icon" />
+          <img src="/placeholder.webp" alt="Google icon" className="social-icon" />
           Sign up with Google
         </button>
         
-        <button className="social-button facebook-button">
-          <img src="/placeholder.svg" alt="Facebook icon" className="social-icon" />
-          Sign up with Facebook
-        </button>
         
         <div className="divider">
           <span>OR</span>
         </div>
         
-        <form className="signup-form">
+        <form className="signup-form" onSubmit={handleRegister}>
           <input
             type="text"
             placeholder="Full Name"
             className="form-input"
+            onChange={(e) => setFname(e.target.value)}
+            required
           />
           <input
             type="email"
             placeholder="Email Address"
             className="form-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             placeholder="Password"
             className="form-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <button type="submit" className="create-account-button">
             Create Account

@@ -7,6 +7,7 @@ import AddFriend from './pages/AddFriend';
 import RemoveFriend from './pages/RemoveFriend';
 import MutualFriends from './pages/MutualFriends';
 import { FriendsProvider } from './context/FriendsContext';
+import SignupForm from './SignupForm';
 import Login from './login';
 
 function App() {

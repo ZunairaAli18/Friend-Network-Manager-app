@@ -1,7 +1,26 @@
-import React from 'react';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import React, { useState } from "react";
+import { auth  } from "./firebase";
 import './login.css';
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      console.log("User logged in Successfully");
+      window.location.href = "/Home";
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+
   return (
     <div className="signup-container">
       <div className="left-section">
@@ -10,35 +29,24 @@ const Login = () => {
       <div className="right-section">
         <h2>Login</h2>
         
-        <button className="social-button google-button">
-          <img src="/placeholder.svg" alt="Google icon" className="social-icon" />
-          Sign up with Google
-        </button>
-        
-        <button className="social-button facebook-button">
-          <img src="/placeholder.svg" alt="Facebook icon" className="social-icon" />
-          Sign up with Facebook
-        </button>
         
         <div className="divider">
-          <span>OR</span>
         </div>
         
-        <form className="signup-form">
-          <input
-            type="text"
-            placeholder="Full Name"
-            className="form-input"
-          />
+        <form className="signup-form" onSubmit={handleSubmit}>
           <input
             type="email"
             placeholder="Email Address"
             className="form-input"
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
           <input
             type="password"
             placeholder="Password"
             className="form-input"
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
           <button type="submit" className="create-account-button">
             Login
