@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFriends } from '../context/FriendsContext';
+import { getAuth } from "firebase/auth";
 
 function AddFriend() {
   const [email, setEmail] = useState('');
@@ -9,33 +10,57 @@ function AddFriend() {
   const navigate = useNavigate();
   const { addFriend } = useFriends();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-    setIsSubmitting(true);
 
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      if (!email.includes('@')) {
-        throw new Error('Please enter a valid email address');
-      }
+const auth = getAuth();
 
-      addFriend({
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+  setIsSubmitting(true);
+
+  const user = auth.currentUser;
+
+  if (!user) {
+    setError("User not logged in.");
+    setIsSubmitting(false);
+    return;
+  }
+
+  try {
+    const idToken = await user.getIdToken(); // Firebase auth token
+    const userId = user.uid;
+
+    const res = await fetch(`http://localhost:5000/users/${userId}/add-friend`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${idToken}`,
+      },
+      body: JSON.stringify({
         name: email.split('@')[0],
-        username: '@' + email.split('@')[0].toLowerCase(),
-        status: 'Pending request',
-        mutualFriends: 0
-      });
+        email: email
+      }),
+    });
 
-      navigate('/friends');
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+    const data = await res.json();
+
+    if (!res.ok) throw new Error(data.error || "Failed to add friend");
+
+    addFriend({
+      name: data.friend.name,
+      username: "@" + data.friend.name.toLowerCase(),
+      status: 'Pending request',
+      mutualFriends: 0
+    });
+
+    navigate('/friends');
+  } catch (err) {
+    setError(err.message);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <div>
