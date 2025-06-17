@@ -30,7 +30,7 @@ const handleSubmit = async (e) => {
     const idToken = await user.getIdToken(); // Firebase auth token
     const userId= localStorage.getItem('mongoUserId');
 
-    const res = await fetch(`http://localhost:5000/users/${userId}/add-friend-by-email`, {
+    const res = await fetch(`http://localhost:5000/api/users/${userId}/add-friend-by-email`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
