@@ -19,7 +19,7 @@
 .env.production.local
 
 # Firebase service account key
-/config/friend-connect-b6467-firebase-adminsdk-hk7pd-3ae969c683.json
+/config/firebase-service-account.json
 
 # System files
 .DS_Store
