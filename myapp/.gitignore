@@ -19,7 +19,7 @@
 .env.production.local
 
 # Firebase service account key
-/config/firebase-service-account.json
+/server/config/firebase-service-account.json
 
 # System files
 .DS_Store
