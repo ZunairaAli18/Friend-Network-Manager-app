@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
@@ -9,15 +9,28 @@ import MutualFriends from './pages/MutualFriends';
 import { FriendsProvider } from './context/FriendsContext';
 import SignupForm from './SignupForm';
 import Login from './login';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './firebase';
+import sendTokenToBackend from './utils/sendTokenToBackend';
 
 function App() {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await sendTokenToBackend(); 
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <FriendsProvider>
       <Router>
         <div className="app">
           <Routes>
-          <Route path="/" element={<SignupForm />} />
-          <Route path="/login" element={<Login />} />
+            <Route path="/" element={<SignupForm />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/friends" element={<Friends />} />
             <Route path="/add-friend" element={<AddFriend />} />
@@ -30,4 +43,4 @@ function App() {
   );
 }
 
-export default App;
+export default App;

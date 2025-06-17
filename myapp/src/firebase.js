@@ -10,7 +10,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyD8oo4ImF2uAFXFpFYmzFPz8x6MGmc8UkA",
   authDomain: "friend-connect-b6467.firebaseapp.com",
   projectId: "friend-connect-b6467",
-  storageBucket: "friend-connect-b6467.firebasestorage.app",
+  storageBucket: "friend-connect-b6467appspot.com",
   messagingSenderId: "808072652446",
   appId: "1:808072652446:web:aa5a6b1899774df4f67d8f"
 };
@@ -18,6 +18,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-export const auth=getAuth();
+export const auth=getAuth(app);
 export const db=getFirestore(app);
 export default app;
