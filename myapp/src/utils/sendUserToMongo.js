@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 // utils/sendUserToMongo.js
 export const sendUserToMongo = async (userData) => {
   try {
-    const res = await fetch('http://localhost:5000/customer', {
+    const res = await fetch('http://localhost:5000/api/users/customer', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

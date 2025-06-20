@@ -19,18 +19,20 @@ const SignupForm = () => {
       const user = auth.currentUser;
       console.log(user);
       if (user) {
+         await sendUserToMongo({
+        "name": fname,
+        "email": user.email,
+        "friends": []
+      });
+       console.log("User Registered Successfully!!");
         await setDoc(doc(db, "Users", user.uid), {
           email: user.email,
           firstName: fname,
           photo:""
         });
           // Send to MongoDB
-      await sendUserToMongo({
-        name: fname,
-        email: user.email,
-        friends: []
-      });
-      console.log("User Registered Successfully!!");
+    
+     
       }
       
       
