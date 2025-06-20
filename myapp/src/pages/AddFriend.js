@@ -6,6 +6,7 @@ import { getAuth } from "firebase/auth";
 function AddFriend() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { addFriend } = useFriends();
@@ -16,6 +17,7 @@ const auth = getAuth();
 const handleSubmit = async (e) => {
   e.preventDefault();
   setError('');
+  setSuccessMessage('');
   setIsSubmitting(true);
 
   const user = auth.currentUser;
@@ -49,8 +51,9 @@ const handleSubmit = async (e) => {
     const data = await res.json();
 
     if (!res.ok) throw new Error(data.error || "Failed to add friend");
-
-    navigate('/friends');
+    setSuccessMessage("Friend added successfully!");
+    setEmail('');
+   
   } catch (err) {
     setError(err.message);
   } finally {
@@ -85,10 +88,11 @@ const handleSubmit = async (e) => {
               }}
             />
             {error && <p style={{ color: 'red', marginTop: '5px' }}>{error}</p>}
+            {successMessage && <p style={{ color: 'green', marginTop: '5px' }}>{successMessage}</p>}
           </div>
-          <button 
-            className="button" 
-            type="submit" 
+          <button
+            className="button"
+            type="submit"
             disabled={isSubmitting || !email.trim()}
           >
             {isSubmitting ? 'Sending...' : 'Send Friend Request'}
