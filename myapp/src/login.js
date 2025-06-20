@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { auth  } from "./firebase";
 import './login.css';
 
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,8 +14,11 @@ const Login = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       console.log("User logged in Successfully");
-      window.location.href = "/Home";
+      // Send user info to MongoDB
+   
 
+      window.location.href = "/Home";
+      
     } catch (error) {
       console.log(error.message);
     }

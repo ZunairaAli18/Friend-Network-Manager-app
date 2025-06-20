@@ -4,6 +4,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 import { db } from './firebase';
 import { setDoc, doc } from "firebase/firestore";
+import { sendUserToMongo } from "./utils/sendUserToMongo";
 
 const SignupForm = () => {
   const [email, setEmail] = useState("");
@@ -23,8 +24,16 @@ const SignupForm = () => {
           firstName: fname,
           photo:""
         });
-      }
+          // Send to MongoDB
+      await sendUserToMongo({
+        name: fname,
+        email: user.email,
+        friends: []
+      });
       console.log("User Registered Successfully!!");
+      }
+      
+      
     } catch (error) {
       console.log(error.message);
     }

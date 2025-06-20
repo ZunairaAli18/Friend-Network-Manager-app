@@ -11,18 +11,9 @@ import SignupForm from './SignupForm';
 import Login from './login';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
-import sendTokenToBackend from './utils/sendTokenToBackend';
+
 
 function App() {
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        await sendTokenToBackend(); 
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
 
   return (
     <FriendsProvider>
@@ -33,7 +24,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/friends" element={<Friends />} />
-            <Route path="/add-friend" element={<AddFriend />} />
+           
             <Route path="/remove-friend" element={<RemoveFriend />} />
             <Route path="/mutual-friends" element={<MutualFriends />} />
           </Routes>

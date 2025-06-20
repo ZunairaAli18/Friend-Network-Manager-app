@@ -10,6 +10,7 @@ exports.getUserByEmail = async (req, res) => {
 
 // Add friend by email
 exports.addFriendByEmail = async (req, res) => {
+  console.log('Reached addFriendByEmail');  // Add this
   const { userId } = req.params;
   const { email } = req.body;
 

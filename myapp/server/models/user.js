@@ -1,5 +1,12 @@
-const { type } = require('@testing-library/user-event/dist/cjs/utility/type.js');
-const mongoose=require('mongoose');
+const mongoose = require('mongoose');
+
+const server = 'localhost:27017';
+const database = 'socialNetworkApp';
+
+// No username/password needed if auth is not enabled
+mongoose.connect(`mongodb://${server}/${database}`)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch(err => console.error("Connection error:", err));
 
 const userSchema=new mongoose.Schema({
     name: { type: String, required: true},
@@ -12,4 +19,4 @@ const userSchema=new mongoose.Schema({
     ]
 });
 
-module.exports=mongoose.model('user',userSchema);
+module.exports=mongoose.model('User',userSchema);
