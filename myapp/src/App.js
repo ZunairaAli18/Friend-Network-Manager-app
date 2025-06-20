@@ -15,6 +15,7 @@ import { auth } from './firebase';
 
 function App() {
 
+
   return (
     <FriendsProvider>
       <Router>
@@ -24,7 +25,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/home" element={<Home />} />
             <Route path="/friends" element={<Friends />} />
-           
+            <Route path="/add-friend" element={<AddFriend/>}/>
             <Route path="/remove-friend" element={<RemoveFriend />} />
             <Route path="/mutual-friends" element={<MutualFriends />} />
           </Routes>

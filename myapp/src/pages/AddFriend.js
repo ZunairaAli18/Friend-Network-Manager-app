@@ -26,32 +26,29 @@ const handleSubmit = async (e) => {
     return;
   }
 
-  try {
-    const idToken = await user.getIdToken(); // Firebase auth token
-    const userId= localStorage.getItem('mongoUserId');
+  const friendEmail = email.trim();
+  const friendName = friendEmail.split('@')[0];
 
-    const res = await fetch(`http://localhost:5000/api/users/${userId}/add-friend-by-email`, {
+  const payload = {
+    userEmail: user.email,
+    name: friendName,
+    email: friendEmail
+  };
+
+  console.log("Sending friend data:", payload);
+
+  try {
+    const res = await fetch('http://localhost:5000/api/users/add-friend-by-email', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${idToken}`,
       },
-      body: JSON.stringify({
-        name: email.split('@')[0],
-        email: email
-      }),
+      body: JSON.stringify(payload),
     });
 
     const data = await res.json();
 
     if (!res.ok) throw new Error(data.error || "Failed to add friend");
-
-    addFriend({
-      name: data.friend.name,
-      username: "@" + data.friend.name.toLowerCase(),
-      status: 'Pending request',
-      mutualFriends: 0
-    });
 
     navigate('/friends');
   } catch (err) {
@@ -60,6 +57,7 @@ const handleSubmit = async (e) => {
     setIsSubmitting(false);
   }
 };
+
 
 
   return (
