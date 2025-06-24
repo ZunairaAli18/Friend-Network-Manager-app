@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/user'); // Mongoose model
 
+// Route to create a user
 router.post('/customer', async (req, res) => {
   const { name, email, friends } = req.body;
 
@@ -10,12 +11,13 @@ router.post('/customer', async (req, res) => {
   }
 
   try {
-    const existingUser = await User.findOne({ email: userEmail });
+    const existingUser = await User.findOne({ email }); // 🔧 Fixed here
+
     if (existingUser) {
       return res.status(200).json({ message: "User already exists", user: existingUser });
     }
 
-    let newUser = new User({
+    const newUser = new User({
       name,
       email,
       friends: friends || []
@@ -30,9 +32,9 @@ router.post('/customer', async (req, res) => {
   }
 });
 
-// Add a friend by email
+// Route to add a friend by email
 router.post('/add-friend-by-email', async (req, res) => {
-    console.log('Route hit!'); 
+  console.log('Route hit!');
   const { userEmail, name, email } = req.body;
 
   if (!userEmail || !email || !name) {
@@ -41,17 +43,16 @@ router.post('/add-friend-by-email', async (req, res) => {
 
   try {
     const user = await User.findOne({ email: userEmail });
-    console.log('hey')
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    console.log('No')
-    // Optional: prevent duplicates
+
     const alreadyFriend = user.friends.find(f => f.email === email);
     if (alreadyFriend) {
       return res.status(400).json({ error: 'Already friends' });
     }
-    console.log('Yes')
+
     user.friends.push({ name, email });
     await user.save();
 
@@ -61,4 +62,5 @@ router.post('/add-friend-by-email', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
 module.exports = router;
