@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user'); // Mongoose model
+const userController = require('../controllers/controller');
 
 // Route to create a user
 router.post('/customer', async (req, res) => {
@@ -66,5 +67,10 @@ router.post('/add-friend-by-email', async (req, res) => {
     res.status(500).json({ error: 'Server error' });
   }
 });
+
+// 🔧 New routes:
+router.get('/friends/:email', userController.getFriendsByEmail);
+router.post('/remove-friend', userController.removeFriendByEmail);
+
 
 module.exports = router;

@@ -29,3 +29,32 @@ exports.addFriendByEmail = async (req, res) => {
 
   res.json({ message: 'Friend added', friend: { name: friend.name, email: friend.email }, totalFriends: user.friends.length });
 };
+
+exports.getFriendsByEmail = async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    res.json({ friends: user.friends });
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+exports.removeFriendByEmail = async (req, res) => {
+  const { userEmail, friendEmail } = req.body;
+
+  try {
+    const user = await User.findOne({ email: userEmail });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+
+    user.friends = user.friends.filter(f => f.email !== friendEmail);
+    await user.save();
+
+    res.json({ message: 'Friend removed successfully', friends: user.friends });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to remove friend' });
+  }
+};
