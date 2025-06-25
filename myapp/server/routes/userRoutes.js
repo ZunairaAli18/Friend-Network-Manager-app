@@ -68,7 +68,7 @@ router.post('/add-friend-by-email', async (req, res) => {
   }
 });
 
-// 🔧 New routes:
+// New routes:
 router.get('/friends/:email', userController.getFriendsByEmail);
 router.post('/remove-friend', userController.removeFriendByEmail);
 

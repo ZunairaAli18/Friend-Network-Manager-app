@@ -13,7 +13,7 @@ useEffect(() => {
   const auth = getAuth();
   const unsubscribe = auth.onAuthStateChanged(async (user) => {
     if (user?.email) {
-      setUserEmail(user.email); // ← THIS WAS MISSING ✅
+      setUserEmail(user.email); 
 
       try {
         console.log("Fetching friends for", user.email);
