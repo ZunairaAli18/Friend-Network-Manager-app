@@ -166,3 +166,14 @@ h2 {
         font-size: 14px;
     }
 }
+
+.error-message {
+  color: #e53e3e;
+  background-color: #fff5f5;
+  border: 1px solid #fed7d7;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
