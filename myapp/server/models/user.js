@@ -6,8 +6,8 @@ const database = 'SocialNetwork';
 const uri = `mongodb+srv://zunairaali2053:KqNhwOrc7PQsONNU@cluster0.1m5mhp6.mongodb.net/${database}?retryWrites=true&w=majority&appName=Cluster0`;
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("✅ Connected to MongoDB Atlas"))
-  .catch(err => console.error("❌ Connection error:", err));
+  .then(() => console.log(" Connected to MongoDB Atlas"))
+  .catch(err => console.error(" Connection error:", err));
 
 const userSchema = new mongoose.Schema({
   name: { type: String, required: true },

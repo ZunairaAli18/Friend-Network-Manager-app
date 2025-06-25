@@ -43,11 +43,15 @@ router.post('/add-friend-by-email', async (req, res) => {
 
   try {
     const user = await User.findOne({ email: userEmail });
-
+    console.log(userEmail);
+    console.log(email);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-
+    const friendUser=await User.findOne({email:email});
+    if(!friendUser){
+      return res.status(404).json({error: 'This email is not registered'});
+    }
     const alreadyFriend = user.friends.find(f => f.email === email);
     if (alreadyFriend) {
       return res.status(400).json({ error: 'Already friends' });

@@ -13,7 +13,10 @@ function AddFriend() {
 
 
 const auth = getAuth();
-
+const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 const handleSubmit = async (e) => {
   e.preventDefault();
   setError('');
@@ -24,11 +27,20 @@ const handleSubmit = async (e) => {
 
   if (!user) {
     setError("User not logged in.");
-    setIsSubmitting(false);
     return;
   }
 
   const friendEmail = email.trim();
+  if (!friendEmail) {
+      setError("Email is required.");
+      return;
+    }
+
+    if (!isValidEmail(friendEmail)) {
+      setIsSubmitting(false);
+      setError("Please enter a valid email address.");
+      return;
+    }
   const friendName = friendEmail.split('@')[0];
 
   const payload = {
@@ -73,12 +85,12 @@ const handleSubmit = async (e) => {
       <div style={{ padding: '20px' }}>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '20px' }}>
-            <label>Username or email</label>
+            <label>email</label>
             <input
               type="text"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter username or email"
+              placeholder="Enter email"
               style={{
                 width: '100%',
                 padding: '10px',
