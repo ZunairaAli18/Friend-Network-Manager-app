@@ -14,7 +14,7 @@ function Home() {
         <div className="home-links">
           <Link to="/add-friend" className="home-link">Add friend</Link>
           <Link to="/remove-friend" className="home-link">Remove a friend</Link>
-          <Link to="/friends" className="home-link">My friends</Link>
+          <Link to="/my-friends" className="home-link">My friends</Link>
           <Link to="/mutual-friends" className="home-link">Get mutual friends</Link>
         </div>
       </div>

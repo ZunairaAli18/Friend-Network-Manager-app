@@ -11,7 +11,7 @@ import SignupForm from './SignupForm';
 import Login from './login';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase';
-
+import MyFriends from './pages/MyFriends';
 
 function App() {
 
@@ -28,6 +28,7 @@ function App() {
             <Route path="/add-friend" element={<AddFriend/>}/>
             <Route path="/remove-friend" element={<RemoveFriend />} />
             <Route path="/mutual-friends" element={<MutualFriends />} />
+            <Route path="/my-friends" element={<MyFriends />} />
           </Routes>
         </div>
       </Router>
