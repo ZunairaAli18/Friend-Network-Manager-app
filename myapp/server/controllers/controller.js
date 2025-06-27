@@ -1,5 +1,34 @@
 const User = require('../models/user');
 
+//create user
+exports.createUser=async(req,res)=>{
+ const { name, email, friends } = req.body;
+ 
+   if (!name || !email) {
+     return res.status(400).json({ error: "Missing name or email" });
+   }
+ 
+   try {
+     const existingUser = await User.findOne({ email }); 
+     if (existingUser) {
+       return res.status(200).json({ message: "User already exists", user: existingUser });
+     }
+ 
+     const newUser = new User({
+       name,
+       email,
+       friends: friends || []
+     });
+ 
+     await newUser.save();
+ 
+     res.status(201).json({ message: "User created successfully", user: newUser });
+   } catch (err) {
+     console.error("MongoDB error:", err);
+     res.status(500).json({ error: err.message });
+   }
+};
+
 // Fetch user by email
 exports.getUserByEmail = async (req, res) => {
   const email = req.params.email;
@@ -10,24 +39,37 @@ exports.getUserByEmail = async (req, res) => {
 
 // Add friend by email
 exports.addFriendByEmail = async (req, res) => {
-  console.log('Reached addFriendByEmail');  // Add this
-  const { userId } = req.params;
-  const { email } = req.body;
-
-  const user = await User.findById(userId);
-  if (!user) return res.status(404).json({ error: 'User adding friend not found' });
-
-  const friend = await User.findOne({ email });
-  if (!friend) return res.status(404).json({ error: 'Friend not found' });
-
-  if (user.friends.some(f => f.email === email)) {
-    return res.status(409).json({ error: 'Friend already added' });
-  }
-
-  user.friends.push({ name: friend.name, email: friend.email });
-  await user.save();
-
-  res.json({ message: 'Friend added', friend: { name: friend.name, email: friend.email }, totalFriends: user.friends.length });
+ console.log('Route hit!');
+   const { userEmail, name, email } = req.body;
+ 
+   if (!userEmail || !email || !name) {
+     return res.status(400).json({ error: 'Missing fields' });
+   }
+ 
+   try {
+     const user = await User.findOne({ email: userEmail });
+     console.log(userEmail);
+     console.log(email);
+     if (!user) {
+       return res.status(404).json({ error: 'User not found' });
+     }
+     const friendUser=await User.findOne({email:email});
+     if(!friendUser){
+       return res.status(404).json({error: 'This email is not registered'});
+     }
+     const alreadyFriend = user.friends.find(f => f.email === email);
+     if (alreadyFriend) {
+       return res.status(400).json({ error: 'Already friends' });
+     }
+ 
+     user.friends.push({ name, email });
+     await user.save();
+ 
+     res.status(200).json({ message: 'Friend added', friend: { name, email } });
+   } catch (err) {
+     console.error('Error adding friend:', err);
+     res.status(500).json({ error: 'Server error' });
+   }
 };
 
 exports.getFriendsByEmail = async (req, res) => {
