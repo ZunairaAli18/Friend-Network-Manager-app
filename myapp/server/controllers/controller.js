@@ -66,6 +66,7 @@ exports.addFriendByEmail = async (req, res) => {
      friendUser.friends.push({ name: user.name, email: user.email });
 
      await user.save();
+     await friendUser.save();
  
      res.status(200).json({ message: 'Friend added', friend: { name, email } });
    } catch (err) {
