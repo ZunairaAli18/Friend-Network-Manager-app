@@ -58,3 +58,39 @@ exports.removeFriendByEmail = async (req, res) => {
     res.status(500).json({ error: 'Failed to remove friend' });
   }
 };
+
+// Inside controller.js
+exports.suggestFriends = async (req, res) => {
+  const email = req.params.email;
+  const user = await User.findOne({ email });
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  const myFriendsEmails = user.friends.map(f => f.email);
+  const myFriendsSet = new Set(myFriendsEmails);
+
+  let suggestionsMap = new Map();
+
+  // Loop through user's friends
+  for (const friend of user.friends) {
+    const friendDoc = await User.findOne({ email: friend.email });
+    if (!friendDoc) continue;
+
+    for (const ff of friendDoc.friends) {
+      if (ff.email === email) continue; // skip self
+      if (myFriendsSet.has(ff.email)) continue; // skip existing friend
+
+      if (!suggestionsMap.has(ff.email)) {
+        suggestionsMap.set(ff.email, {
+          email: ff.email,
+          name: ff.name,
+          mutualFriends: [friend.name] // start list with this friend
+        });
+      } else {
+        suggestionsMap.get(ff.email).mutualFriends.push(friend.name);
+      }
+    }
+  }
+
+  const suggestions = Array.from(suggestionsMap.values());
+  res.json({ suggestions });
+};

@@ -25,11 +25,11 @@ const SignupForm = () => {
           friends: []
         });
 
-        await setDoc(doc(db, "Users", user.uid), {
+ /*     await setDoc(doc(db, "Users", user.uid), {
           email: user.email,
           firstName: fname,
           photo: ""
-        });
+        });*/
 
         console.log("User Registered Successfully!!");
         window.location.href = "/Home";

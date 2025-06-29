@@ -89,6 +89,7 @@ res.status(500).json({ error: 'Server error' });
 // New routes:
 router.get('/friends/:email', userController.getFriendsByEmail);
 router.post('/remove-friend', userController.removeFriendByEmail);
+router.get('/suggested-friends/:email', userController.suggestFriends);
 
 
 module.exports = router;

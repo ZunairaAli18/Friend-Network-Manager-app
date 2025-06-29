@@ -1,62 +1,84 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useFriends } from '../context/FriendsContext';
+import { getAuth } from 'firebase/auth';
 
 function MutualFriends() {
   const navigate = useNavigate();
-  const { friends, searchFriends } = useFriends();
+  const [suggested, setSuggested] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  
-  const currentUser = {
-    name: 'Alex Johnson',
-    username: '@alex',
-    totalFriends: 325
-  };
+  const [userEmail, setUserEmail] = useState('');
 
-  const filteredFriends = searchQuery 
-    ? searchFriends(searchQuery)
-    : friends.filter(friend => friend.mutualFriends > 0);
+  useEffect(() => {
+    const auth = getAuth();
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
+      if (user?.email) {
+        setUserEmail(user.email);
+        try {
+          const res = await fetch(`http://localhost:5000/api/users/suggested-friends/${user.email}`);
+          const data = await res.json();
+          if (res.ok) {
+            setSuggested(data.suggestions || []);
+          } else {
+            console.error('Error fetching suggestions:', data.error);
+          }
+        } catch (err) {
+          console.error('Network error:', err);
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const filteredSuggestions = suggested.filter(friend =>
+    friend.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    friend.email.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div>
       <header className="header">
         <button className="back-button" onClick={() => navigate(-1)}>←</button>
-        <h1>Mutual Friends</h1>
+        <h1>Suggested Friends</h1>
       </header>
-      <div className="profile-section" style={{ padding: '20px', backgroundColor: 'var(--primary-color)', color: 'white' }}>
-        <div className="friend-avatar" style={{ margin: '0 auto 15px auto' }}></div>
-        <h2 style={{ textAlign: 'center' }}>{currentUser.name}</h2>
-        <p style={{ textAlign: 'center' }}>{currentUser.username} • {currentUser.totalFriends} friends</p>
-      </div>
-      <div className="search-bar">
-        <input 
-          type="text" 
-          placeholder="Search mutual friends" 
+
+      <div className="search-bar" style={{ padding: '1rem' }}>
+        <input
+          type="text"
+          placeholder="Search suggestions"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
+          style={{ width: '100%', padding: '8px', borderRadius: '5px', border: '1px solid #ddd' }}
         />
       </div>
-      {filteredFriends.length === 0 ? (
+
+      {filteredSuggestions.length === 0 ? (
         <p style={{ textAlign: 'center', padding: '20px', color: '#666' }}>
-          {searchQuery ? 'No mutual friends found' : 'No mutual friends yet'}
+          {searchQuery ? 'No matches found' : 'No suggestions yet'}
         </p>
       ) : (
         <div style={{ padding: '20px' }}>
-          {filteredFriends.map(friend => (
-            <div key={friend.id} className="friend-item">
-              <div className="friend-avatar"></div>
-              <div className="friend-info">
-                <div className="friend-name">{friend.name}</div>
+          {filteredSuggestions.map(friend => (
+            <div key={friend.email} className="friend-item" style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '10px 0',
+              borderBottom: '1px solid #eee'
+            }}>
+              <div>
+                <div className="friend-name" style={{ fontWeight: 'bold' }}>{friend.name}</div>
                 <div className="friend-username">
-                  {friend.username} • {friend.mutualFriends} mutual friends
+                  Mutual Friends: {Array.isArray(friend.mutualFriends) ? friend.mutualFriends.join(', ') : 'None'}
                 </div>
+
               </div>
-              <button 
-                style={{ 
-                  marginLeft: '10px', 
-                  background: 'none', 
-                  border: 'none', 
-                  cursor: 'pointer' 
+              <button
+                style={{
+                  marginLeft: '10px',
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer'
                 }}
               >
                 ⋮
@@ -69,4 +91,4 @@ function MutualFriends() {
   );
 }
 
-export default MutualFriends;
+export default MutualFriends;
