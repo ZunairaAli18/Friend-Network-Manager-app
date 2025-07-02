@@ -16,6 +16,7 @@ function Home() {
           <Link to="/remove-friend" className="home-link">Remove a friend</Link>
           <Link to="/my-friends" className="home-link">My friends</Link>
           <Link to="/mutual-friends" className="home-link">Suggest new friends</Link>
+          <Link to="/chat-entry">Chat with friends</Link>
         </div>
       </div>
     </div>
