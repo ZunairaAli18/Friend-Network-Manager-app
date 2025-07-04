@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const chatRoutes = require('./routes/chatRoutes');
+const chatRoutes = require('./routes/ChatRoutes');
 const cors = require('cors');
 
 const app = express();
@@ -19,7 +19,7 @@ app.use(cors()); // allow frontend to access backend
 app.use(express.json());
 
 // Routes
-app.use('/api/chat', chatRoutes);
+app.use('/api/chat', ChatRoutes);
 
 // Start server
 app.listen(PORT, () => {

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user');
-const Message = require('../models/Message');
+const Message = require('../models/Messages');
 
 // Verify friend
 router.post('/verify-friend', async (req, res) => {
